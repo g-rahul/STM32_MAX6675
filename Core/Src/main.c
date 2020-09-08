@@ -103,7 +103,7 @@ int main(void)
   while (1)
   {
 		HAL_GPIO_WritePin(GPIOC,GPIO_PIN_3,GPIO_PIN_SET);
-	HAL_Delay(1);
+	  HAL_Delay(1);
 		if(HAL_SPI_GetState(&hspi2) != HAL_SPI_STATE_BUSY_RX)
 		{
 			HAL_GPIO_WritePin(GPIOC,GPIO_PIN_3,GPIO_PIN_RESET);
@@ -111,7 +111,7 @@ int main(void)
 			
 			if(HAL_SPI_GetState(&hspi2) == HAL_SPI_STATE_READY)
 			{
-			if(HAL_SPI_Receive(&hspi2,spirx_buff,2,50)!= HAL_OK)
+			if(HAL_SPI_Receive(&hspi2,spirx_buff,2,10)!= HAL_OK)
 			{
 				Error_Handler();
 			}
@@ -123,6 +123,7 @@ int main(void)
 		temp =  temp|spirx_buff[1];
 		temp = temp>>3;
 		temperature=temp*0.25;	
+		HAL_UART_Transmit(&huart2,(uint8_t *)&temperature,2,10);
 		HAL_Delay(500);
 	  
     /* USER CODE END WHILE */
